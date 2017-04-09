@@ -54,6 +54,11 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     private List<Integer> mFlashModes;
 
     public static final int PERMISSION_RC = 69;
+    private Fragment mFragment;
+
+    public Fragment getFragment() {
+        return mFragment;
+    }
 
     @IntDef({CAMERA_POSITION_UNKNOWN, CAMERA_POSITION_BACK, CAMERA_POSITION_FRONT})
     @Retention(RetentionPolicy.SOURCE)
@@ -94,7 +99,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     }
 
     @Override
-    protected final void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         super.onCreate(savedInstanceState);
         Log.w(this);
@@ -206,11 +211,12 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     }
 
     @NonNull
-    public abstract Fragment getFragment();
+    protected abstract Fragment newFragment();
 
     public final Fragment createFragment() {
-        Fragment frag = getFragment();
+        Fragment frag = newFragment();
         frag.setArguments(getIntent().getExtras());
+        mFragment=frag;
         return frag;
     }
 
@@ -328,7 +334,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     @Override
     public final void onShowPreview(@Nullable final String outputUri, boolean countdownIsAtZero) {
         Toast.makeText(this, "outputUri:"+outputUri, Toast.LENGTH_LONG).show();
-        if (true) return;
+//        if (true) return;
         if ((shouldAutoSubmit() && (countdownIsAtZero || !allowRetry() || !hasLengthLimit())) || outputUri == null) {
             if (outputUri == null) {
                 setResult(RESULT_CANCELED, new Intent().putExtra(MaterialCamera.ERROR_EXTRA,
@@ -353,7 +359,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     @Override
     public void onShowStillshot(String outputUri) {
         Toast.makeText(this, "outputUri:"+outputUri, Toast.LENGTH_LONG).show();
-        if (true) return;
+//        if (true) return;
         if (shouldAutoSubmit()) {
             useMedia(outputUri);
         } else {
