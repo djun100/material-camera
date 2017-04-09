@@ -23,12 +23,14 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.afollestad.materialcamera.MaterialCamera;
 import com.afollestad.materialcamera.R;
 import com.afollestad.materialcamera.TimeLimitReachedException;
 import com.afollestad.materialcamera.util.CameraUtil;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.cy.app.Log;
 
 import java.io.File;
 import java.lang.annotation.Retention;
@@ -95,6 +97,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     protected final void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         super.onCreate(savedInstanceState);
+        Log.w(this);
 
         if (!CameraUtil.hasCamera(this)) {
             new MaterialDialog.Builder(this)
@@ -324,6 +327,8 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
 
     @Override
     public final void onShowPreview(@Nullable final String outputUri, boolean countdownIsAtZero) {
+        Toast.makeText(this, "outputUri:"+outputUri, Toast.LENGTH_LONG).show();
+        if (true) return;
         if ((shouldAutoSubmit() && (countdownIsAtZero || !allowRetry() || !hasLengthLimit())) || outputUri == null) {
             if (outputUri == null) {
                 setResult(RESULT_CANCELED, new Intent().putExtra(MaterialCamera.ERROR_EXTRA,
@@ -347,6 +352,8 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
 
     @Override
     public void onShowStillshot(String outputUri) {
+        Toast.makeText(this, "outputUri:"+outputUri, Toast.LENGTH_LONG).show();
+        if (true) return;
         if (shouldAutoSubmit()) {
             useMedia(outputUri);
         } else {
