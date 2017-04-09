@@ -1,7 +1,6 @@
 package com.afollestad.materialcamera.internal;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +20,7 @@ import com.cy.app.Log;
 /**录像结果预览
  * @author Aidan Follestad (afollestad)
  */
-public class PlaybackVideoFragment extends Fragment implements CameraUriInterface, EasyVideoCallback {
+public class PlaybackVideoFragment extends BasePreviewFra implements  EasyVideoCallback {
 
     private EasyVideoPlayer mPlayer;
     private String mOutputUri;

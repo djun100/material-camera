@@ -1,7 +1,6 @@
 package com.afollestad.materialcamera.internal;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -13,7 +12,7 @@ import com.afollestad.materialcamera.util.CameraUtil;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cy.app.Log;
 
-public abstract class BaseGalleryFragment extends Fragment implements CameraUriInterface, View.OnClickListener {
+public abstract class BaseGalleryFragment extends BasePreviewFra implements View.OnClickListener {
 
     BaseCaptureInterface mInterface;
     int mPrimaryColor;

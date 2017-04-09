@@ -56,11 +56,12 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     public static final int PERMISSION_RC = 69;
     private BaseCameraFragment mCameraFragment;
 
-    public BaseGalleryFragment getPreviewFra() {
+
+    public BasePreviewFra getBasePreviewFra() {
         return mBasePreviewFra;
     }
 
-    private BaseGalleryFragment mBasePreviewFra;
+    private BasePreviewFra mBasePreviewFra;
     public BaseCameraFragment getCameraFragment() {
         return mCameraFragment;
     }
@@ -353,10 +354,10 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
                 // No countdown or countdown should not continue through playback, reset timer to 0
                 setRecordingStart(-1);
             }
-            Fragment frag = PlaybackVideoFragment.newInstance(outputUri, allowRetry(),
+            mBasePreviewFra= PlaybackVideoFragment.newInstance(outputUri, allowRetry(),
                     getIntent().getIntExtra(CameraIntentKey.PRIMARY_COLOR, 0));
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, frag)
+                    .replace(R.id.container, (Fragment) mBasePreviewFra)
                     .commit();
         }
     }
@@ -371,7 +372,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
             mBasePreviewFra = StillshotPreviewFragment.newInstance(outputUri, allowRetry(),
                     getIntent().getIntExtra(CameraIntentKey.PRIMARY_COLOR, 0));
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, mBasePreviewFra)
+                    .replace(R.id.container, (Fragment) mBasePreviewFra)
                     .commit();
         }
     }

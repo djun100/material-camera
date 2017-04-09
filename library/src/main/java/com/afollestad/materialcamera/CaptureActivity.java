@@ -34,12 +34,12 @@ public class CaptureActivity extends BaseCaptureActivity implements CaptureButto
     public void cancel() {//拍照预览按界面 return 按钮
         Log.w(CamConst.LOG_CALLBACK_FLOW,"cancel");
 
-//        onRetry(getPreviewFra().getOutputUri());
+//        onRetry(getPreviewInstance().getOutputUri());
     }
 
     @Override
-    public void determine() {
-        Log.w(CamConst.LOG_CALLBACK_FLOW,"determine");
+    public void determine() {//拍照预览按界面 确认使用 按钮
+        Log.w(CamConst.LOG_CALLBACK_FLOW,"determine:"+ getBasePreviewFra().getOutputUri());
     }
 
     @Override
@@ -60,8 +60,9 @@ public class CaptureActivity extends BaseCaptureActivity implements CaptureButto
     }
 
     @Override
-    public void getRecordResult() {
-        Log.w(CamConst.LOG_CALLBACK_FLOW,"getRecordResult");
+    public void getRecordResult() {//录像预览按界面 确认使用 按钮
+        Log.w(CamConst.LOG_CALLBACK_FLOW,"getRecordResult:"+ getBasePreviewFra().getOutputUri());
+
     }
 
     @Override
