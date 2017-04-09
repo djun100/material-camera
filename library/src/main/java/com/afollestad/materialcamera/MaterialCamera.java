@@ -161,6 +161,10 @@ public class MaterialCamera {
         return primaryColor(DialogUtils.resolveColor(mContext, colorAttr));
     }
 
+    /**是否显示竖屏录制dialog
+     * @param show
+     * @return
+     */
     public MaterialCamera showPortraitWarning(boolean show) {
         mShowPortraitWarning = show;
         return this;

@@ -89,6 +89,8 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        com.cy.app.Log.w(this);
+
         return inflater.inflate(R.layout.mcam_fragment_videocapture, container, false);
     }
 
@@ -135,7 +137,7 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
         } else {
             mIconTextColor = ContextCompat.getColor(getActivity(), R.color.mcam_color_dark);
         }
-        view.findViewById(R.id.controlsFrame).setBackgroundColor(primaryColor);
+//        view.findViewById(R.id.controlsFrame).setBackgroundColor(primaryColor);
         mRecordDuration.setTextColor(mIconTextColor);
 
         if (mMediaRecorder != null && mIsRecording) {
@@ -149,8 +151,8 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
             mOutputUri = savedInstanceState.getString("output_uri");
 
         if (mInterface.useStillshot()) {
-            mButtonVideo.setVisibility(View.GONE);
-            mRecordDuration.setVisibility(View.GONE);
+//            mButtonVideo.setVisibility(View.GONE);
+//            mRecordDuration.setVisibility(View.GONE);
             mButtonStillshot.setVisibility(View.VISIBLE);
             setImageRes(mButtonStillshot, mInterface.iconStillshot());
             mButtonFlash.setVisibility(View.VISIBLE);
@@ -390,32 +392,36 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
             openCamera();
             setupFlashMode();
         } else if (id == R.id.video) {
-            if (mIsRecording) {
-                stopRecordingVideo(false);
-                mIsRecording = false;
-            } else {
-                if (getArguments().getBoolean(CameraIntentKey.SHOW_PORTRAIT_WARNING, true) &&
-                        Degrees.isPortrait(getActivity())) {
-                    new MaterialDialog.Builder(getActivity())
-                            .title(R.string.mcam_portrait)
-                            .content(R.string.mcam_portrait_warning)
-                            .positiveText(R.string.mcam_yes)
-                            .negativeText(android.R.string.cancel)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                    mIsRecording = startRecordingVideo();
-                                }
-                            })
-                            .show();
-                } else {
-                    mIsRecording = startRecordingVideo();
-                }
-            }
+            clickRecordVideo();
         } else if (id == R.id.stillshot) {
             takeStillshot();
         } else if (id == R.id.flash) {
             invalidateFlash(true);
+        }
+    }
+
+    private void clickRecordVideo() {
+        if (mIsRecording) {
+            stopRecordingVideo(false);
+            mIsRecording = false;
+        } else {
+            if (getArguments().getBoolean(CameraIntentKey.SHOW_PORTRAIT_WARNING, true) &&
+                    Degrees.isPortrait(getActivity())) {
+                new MaterialDialog.Builder(getActivity())
+                        .title(R.string.mcam_portrait)
+                        .content(R.string.mcam_portrait_warning)
+                        .positiveText(R.string.mcam_yes)
+                        .negativeText(android.R.string.cancel)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                mIsRecording = startRecordingVideo();
+                            }
+                        })
+                        .show();
+            } else {
+                mIsRecording = startRecordingVideo();
+            }
         }
     }
 

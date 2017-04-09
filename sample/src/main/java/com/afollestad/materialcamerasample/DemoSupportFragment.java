@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialcamera.MaterialCamera;
+import com.cy.app.Log;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -40,6 +41,8 @@ public class DemoSupportFragment extends Fragment implements View.OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        Log.w(this);
+
     }
 
     @Override

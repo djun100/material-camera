@@ -16,8 +16,9 @@ import com.afollestad.easyvideoplayer.EasyVideoPlayer;
 import com.afollestad.materialcamera.R;
 import com.afollestad.materialcamera.util.CameraUtil;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.cy.app.Log;
 
-/**
+/**录像结果预览
  * @author Aidan Follestad (afollestad)
  */
 public class PlaybackVideoFragment extends Fragment implements CameraUriInterface, EasyVideoCallback {
@@ -47,6 +48,8 @@ public class PlaybackVideoFragment extends Fragment implements CameraUriInterfac
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Log.w(this);
+
         mInterface = (BaseCaptureInterface) activity;
     }
 

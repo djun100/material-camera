@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.afollestad.materialcamera.R;
 import com.afollestad.materialcamera.util.CameraUtil;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.cy.app.Log;
 
 public abstract class BaseGalleryFragment extends Fragment implements CameraUriInterface, View.OnClickListener {
 
@@ -25,6 +26,8 @@ public abstract class BaseGalleryFragment extends Fragment implements CameraUriI
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Log.w(this);
+
         mInterface = (BaseCaptureInterface) activity;
     }
 

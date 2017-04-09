@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialcamera.MaterialCamera;
+import com.cy.app.Log;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.w(this);
         setContentView(R.layout.activity_main);
         findViewById(R.id.launchCamera).setOnClickListener(this);
         findViewById(R.id.launchCameraStillshot).setOnClickListener(this);
@@ -71,7 +72,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .defaultToFrontFacing(true)
                 .allowRetry(true)
                 .autoSubmit(false)
-                .labelConfirm(R.string.mcam_use_video);
+                .labelConfirm(R.string.mcam_use_video)
+                .videoPreferredHeight(1280)
+                ;
 
         if (view.getId() == R.id.launchCameraStillshot)
             materialCamera

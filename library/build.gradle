@@ -9,7 +9,7 @@ ext {
     VIDEO_PLAYER_VERSION = '0.3.0'
     MD_VERSION = '0.9.1.0'
     TARGET_SDK = 25
-    BUILD_TOOLS = "24.0.3"
+    BUILD_TOOLS = "25.0.0"
 }
 
 android {
@@ -44,6 +44,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
     compile "com.afollestad:easyvideoplayer:$VIDEO_PLAYER_VERSION"
     compile "com.afollestad.material-dialogs:core:$MD_VERSION"
+    compile 'com.github.djun100:UtilAndroid:633fa53'
 }
 
-apply from: 'https://raw.githubusercontent.com/afollestad/aidanfollestad.com/master/android-lib-release.gradle'
+//apply from: 'https://raw.githubusercontent.com/afollestad/aidanfollestad.com/master/android-lib-release.gradle'

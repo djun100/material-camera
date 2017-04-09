@@ -12,7 +12,11 @@ import android.widget.ImageView;
 
 import com.afollestad.materialcamera.R;
 import com.afollestad.materialcamera.util.ImageUtil;
+import com.cy.app.Log;
 
+/**
+ * 拍照结果预览
+ */
 public class StillshotPreviewFragment extends BaseGalleryFragment {
 
     private ImageView mImageView;
@@ -23,6 +27,7 @@ public class StillshotPreviewFragment extends BaseGalleryFragment {
     private static Bitmap mBitmap;
 
     public static StillshotPreviewFragment newInstance(String outputUri, boolean allowRetry, int primaryColor) {
+
         final StillshotPreviewFragment fragment = new StillshotPreviewFragment();
         fragment.setRetainInstance(true);
         Bundle args = new Bundle();
@@ -36,6 +41,8 @@ public class StillshotPreviewFragment extends BaseGalleryFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.w(this);
+
         return inflater.inflate(R.layout.mcam_fragment_stillshot, container, false);
     }
 

@@ -1,7 +1,6 @@
 package com.afollestad.materialcamera.internal;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
@@ -37,11 +36,11 @@ import static com.afollestad.materialcamera.internal.BaseCaptureActivity.FLASH_M
 import static com.afollestad.materialcamera.internal.BaseCaptureActivity.FLASH_MODE_AUTO;
 import static com.afollestad.materialcamera.internal.BaseCaptureActivity.FLASH_MODE_OFF;
 
-/**
+/**实时预览界面
  * @author Aidan Follestad (afollestad)
  */
-@SuppressWarnings("deprecation")
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+//@SuppressWarnings("deprecation")
+//@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class CameraFragment extends BaseCameraFragment implements View.OnClickListener {
 
     CameraPreview mPreviewView;
@@ -60,19 +59,22 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         return fragment;
     }
 
-    private static Camera.Size chooseVideoSize(BaseCaptureInterface ci, List<Camera.Size> choices) {
+    private static Camera.Size chooseVideoSize(BaseCaptureInterface ci
+            , List<Camera.Size> supportedVideoSizes) {
         Camera.Size backupSize = null;
-        for (Camera.Size size : choices) {
+        for (Camera.Size size : supportedVideoSizes) {//由高——→低分辨率
             if (size.height <= ci.videoPreferredHeight()) {
                 if (size.width == size.height * ci.videoPreferredAspect())
                     return size;
-                if (ci.videoPreferredHeight() >= size.height)
+                if (ci.videoPreferredHeight() >= size.height){
                     backupSize = size;
+                    break;
+                }
             }
         }
         if (backupSize != null) return backupSize;
         LOG(CameraFragment.class, "Couldn't find any suitable video size");
-        return choices.get(choices.size() - 1);
+        return supportedVideoSizes.get(supportedVideoSizes.size() - 1);
     }
 
     private static Camera.Size chooseOptimalSize(List<Camera.Size> choices, int width, int height, Camera.Size aspectRatio) {
@@ -392,6 +394,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
                 return false;
             }
         } catch (Throwable t) {
+            com.cy.app.Log.e(t.getMessage());
             try {
                 mCamera.lock();
             } catch (IllegalStateException e) {
@@ -544,10 +547,10 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             }
         };
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//            // We could have configurable shutter sound here
-//            mCamera.enableShutterSound(false);
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            // We could have configurable shutter sound here
+            mCamera.enableShutterSound(false);
+        }
 
         mButtonStillshot.setEnabled(false);
         mCamera.takePicture(shutterCallback, rawCallback, jpegCallback);
