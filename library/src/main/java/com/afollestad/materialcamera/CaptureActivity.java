@@ -1,5 +1,6 @@
 package com.afollestad.materialcamera;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -10,6 +11,7 @@ import com.cy.app.Log;
 
 public class CaptureActivity extends BaseCaptureActivity implements CaptureButton.CaptureListener{
     CaptureButton mCaptureBtn;
+    public static final int REQUEST_CODE_MEDIA=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class CaptureActivity extends BaseCaptureActivity implements CaptureButto
     @Override
     public void determine() {//拍照预览按界面 确认使用 按钮
         Log.w(CamConst.LOG_CALLBACK_FLOW,"determine:"+ getBasePreviewFra().getOutputUri());
+        finishBackResult(getBasePreviewFra().getOutputUri());
     }
 
     @Override
@@ -62,7 +65,14 @@ public class CaptureActivity extends BaseCaptureActivity implements CaptureButto
     @Override
     public void getRecordResult() {//录像预览按界面 确认使用 按钮
         Log.w(CamConst.LOG_CALLBACK_FLOW,"getRecordResult:"+ getBasePreviewFra().getOutputUri());
+        finishBackResult(getBasePreviewFra().getOutputUri());
+    }
 
+    private void finishBackResult(String mediaPath) {
+        Intent intent=new Intent();
+        intent.putExtra("data",mediaPath);
+        setResult(REQUEST_CODE_MEDIA,intent);
+        finish();
     }
 
     @Override
