@@ -54,10 +54,15 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     private List<Integer> mFlashModes;
 
     public static final int PERMISSION_RC = 69;
-    private Fragment mFragment;
+    private BaseCameraFragment mCameraFragment;
 
-    public Fragment getFragment() {
-        return mFragment;
+    public BaseGalleryFragment getPreviewFra() {
+        return mBasePreviewFra;
+    }
+
+    private BaseGalleryFragment mBasePreviewFra;
+    public BaseCameraFragment getCameraFragment() {
+        return mCameraFragment;
     }
 
     @IntDef({CAMERA_POSITION_UNKNOWN, CAMERA_POSITION_BACK, CAMERA_POSITION_FRONT})
@@ -211,12 +216,12 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     }
 
     @NonNull
-    protected abstract Fragment newFragment();
+    protected abstract BaseCameraFragment newFragment();
 
     public final Fragment createFragment() {
-        Fragment frag = newFragment();
+        BaseCameraFragment frag = newFragment();
         frag.setArguments(getIntent().getExtras());
-        mFragment=frag;
+        mCameraFragment =frag;
         return frag;
     }
 
@@ -363,10 +368,10 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
         if (shouldAutoSubmit()) {
             useMedia(outputUri);
         } else {
-            Fragment frag = StillshotPreviewFragment.newInstance(outputUri, allowRetry(),
+            mBasePreviewFra = StillshotPreviewFragment.newInstance(outputUri, allowRetry(),
                     getIntent().getIntExtra(CameraIntentKey.PRIMARY_COLOR, 0));
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, frag)
+                    .replace(R.id.container, mBasePreviewFra)
                     .commit();
         }
     }

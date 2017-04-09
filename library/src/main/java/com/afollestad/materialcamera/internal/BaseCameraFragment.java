@@ -43,7 +43,7 @@ import static com.afollestad.materialcamera.internal.BaseCaptureActivity.FLASH_M
 /**
  * @author Aidan Follestad (afollestad)
  */
-abstract class BaseCameraFragment extends Fragment implements CameraUriInterface, View.OnClickListener {
+public abstract class BaseCameraFragment extends Fragment implements CameraUriInterface, View.OnClickListener {
 
     protected ImageButton mButtonVideo;
     protected ImageButton mButtonStillshot;
