@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,10 +13,18 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
+
+import com.afollestad.materialcamera.R;
+import com.cy.app.UtilContext;
+
+import java.security.KeyFactory;
+
+import static android.R.attr.width;
 
 /**
  * {@link #captureSuccess() 拍照完成需要调用执行的动画}
@@ -35,7 +45,9 @@ public class CaptureButton extends View {
     private float btn_before_inside_radius;
     private float btn_before_outside_radius;
     //after radius
+    /**放大后内圈半径*/
     private float btn_after_inside_radius;
+    /**放大后外圈半径*/
     private float btn_after_outside_radius;
 
     private float btn_return_length;
@@ -101,17 +113,16 @@ public class CaptureButton extends View {
         btn_center_X = getWidth() / 2;
         btn_center_Y = getHeight() / 2;
 
-        btn_outside_radius = (float) (getWidth() / 9);
-        btn_inside_radius = (float) (btn_outside_radius * 0.75);
+        btn_outside_radius = (float) dp(35);
+        btn_inside_radius = (float) dp(29);
 
-        btn_before_outside_radius = (float) (getWidth() / 9);
-        btn_before_inside_radius = (float) (btn_outside_radius * 0.75);
-        btn_after_outside_radius = (float) (getWidth() / 6);
+        btn_before_outside_radius = btn_outside_radius;
+        btn_before_inside_radius = btn_inside_radius;
+        btn_after_outside_radius = (float)dp(45);
         btn_after_inside_radius = (float) (btn_outside_radius * 0.6);
 
         btn_return_length = (float) (btn_outside_radius * 0.35);
-//        btn_result_radius = 80;
-        btn_result_radius = (float) (getWidth() / 9);
+        btn_result_radius = dp(38);
         btn_left_X = getWidth() / 2;
         btn_right_X = getWidth() / 2;
     }
@@ -121,84 +132,39 @@ public class CaptureButton extends View {
         super.onDraw(canvas);
         if (stateSelected == STATE_LESSNESS || stateSelected == STATE_RECORD) {
             //draw capture button
+            //画外环
             mPaint.setColor(0xFFEEEEEE);
+            mPaint.setStrokeWidth(dp(7));
+            mPaint.setStyle(Paint.Style.STROKE);
             canvas.drawCircle(btn_center_X, btn_center_Y, btn_outside_radius, mPaint);
-            mPaint.setColor(Color.WHITE);
+            //画内环
+            if (btn_outside_radius==btn_after_outside_radius){
+                mPaint.setColor(0xff16cd90);
+            }else {
+                mPaint.setColor(0x33fafafa);
+            }
+            mPaint.setStyle(Paint.Style.FILL);
             canvas.drawCircle(btn_center_X, btn_center_Y, btn_inside_radius, mPaint);
 
             //draw Progress bar
             Paint paintArc = new Paint();
             paintArc.setAntiAlias(true);
-            paintArc.setColor(0xFF00CC00);
+            paintArc.setColor(0xff16cd90);
             paintArc.setStyle(Paint.Style.STROKE);
-            paintArc.setStrokeWidth(10);
+            paintArc.setStrokeWidth(dp(7));
 
-            rectF = new RectF(btn_center_X - (btn_after_outside_radius - 5),
-                    btn_center_Y - (btn_after_outside_radius - 5),
-                    btn_center_X + (btn_after_outside_radius - 5),
-                    btn_center_Y + (btn_after_outside_radius - 5));
+            rectF = new RectF(btn_center_X - (btn_after_outside_radius ),
+                    btn_center_Y - (btn_after_outside_radius ),
+                    btn_center_X + (btn_after_outside_radius ),
+                    btn_center_Y + (btn_after_outside_radius ));
             canvas.drawArc(rectF, -90, progress, false, paintArc);
 
-            //draw return button
-            Paint paint = new Paint();
-            paint.setAntiAlias(true);
-            paint.setColor(Color.WHITE);
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(4);
-            Path path = new Path();
-
-            btn_return_X = ((getWidth() / 2) - btn_outside_radius) / 2;
-            btn_return_Y = (getHeight() / 2 + 10);
-
-            path.moveTo(btn_return_X - btn_return_length, btn_return_Y - btn_return_length);
-            path.lineTo(btn_return_X, btn_return_Y);
-            path.lineTo(btn_return_X + btn_return_length, btn_return_Y - btn_return_length);
-            canvas.drawPath(path, paint);
+//            drawDownArrow(canvas);
         } else if (stateSelected == STATE_RECORD_BROWSE || stateSelected == STATE_PICTURE_BROWSE) {
 
-            mPaint.setColor(0xFFEEEEEE);
-            canvas.drawCircle(btn_left_X, btn_center_Y, btn_result_radius, mPaint);
-            mPaint.setColor(Color.WHITE);
-            canvas.drawCircle(btn_right_X, btn_center_Y, btn_result_radius, mPaint);
-
-
-            //left button
-            Paint paint = new Paint();
-            paint.setAntiAlias(true);
-            paint.setColor(Color.BLACK);
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(3);
-            Path path = new Path();
-
-            path.moveTo(btn_left_X - 2, btn_center_Y + 14);
-            path.lineTo(btn_left_X + 14, btn_center_Y + 14);
-            path.arcTo(new RectF(btn_left_X, btn_center_Y - 14, btn_left_X + 28, btn_center_Y + 14), 90, -180);
-            path.lineTo(btn_left_X - 14, btn_center_Y - 14);
-            canvas.drawPath(path, paint);
-
-
-            paint.setStyle(Paint.Style.FILL);
-            path.reset();
-            path.moveTo(btn_left_X - 14, btn_center_Y - 22);
-            path.lineTo(btn_left_X - 14, btn_center_Y - 6);
-            path.lineTo(btn_left_X - 23, btn_center_Y - 14);
-            path.close();
-            canvas.drawPath(path, paint);
-
-
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(0xFF00CC00);
-            paint.setStrokeWidth(4);
-            path.reset();
-            path.moveTo(btn_right_X - 28, btn_center_Y);
-            path.lineTo(btn_right_X - 8, btn_center_Y + 22);
-            path.lineTo(btn_right_X + 30, btn_center_Y - 20);
-            path.lineTo(btn_right_X - 8, btn_center_Y + 18);
-            path.close();
-            canvas.drawPath(path, paint);
+            drawReturnConfirmBtn(canvas);
         }
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -423,7 +389,6 @@ public class CaptureButton extends View {
     }
 
     private void captureAnimation(float left, float right) {
-//        Toast.makeText(mContext,left+ " = "+right,Toast.LENGTH_SHORT).show();
         Log.i("CaptureButtom", left + "==" + right);
         ValueAnimator left_anim = ValueAnimator.ofFloat(btn_left_X, left);
         ValueAnimator right_anim = ValueAnimator.ofFloat(btn_right_X, right);
@@ -472,5 +437,86 @@ public class CaptureButton extends View {
         public void deleteRecordResult();
 
         public void scale(float scaleValue);
+    }
+
+    private void drawReturnConfirmBtn(Canvas canvas) {
+        drawDrawable(canvas,R.drawable.mediarecord_return,dp(40),getHeight()-dp(121),dp(76));
+        drawDrawable(canvas,R.drawable.mediarecord_confirm,getWidth()-dp(116),getHeight()-dp(121),dp(76));
+
+       /* if (true) return;
+        mPaint.setColor(0xcd979797);
+        canvas.drawCircle(btn_left_X, btn_center_Y, btn_result_radius, mPaint);
+        mPaint.setColor(0xff16cd90);
+        canvas.drawCircle(btn_right_X, btn_center_Y, btn_result_radius, mPaint);
+
+
+        //left button 返回拐角箭头
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(dp(2));
+        Path path = new Path();
+
+        path.moveTo(btn_left_X - 2, btn_center_Y + 14);
+        path.lineTo(btn_left_X + 14, btn_center_Y + 14);
+        path.arcTo(new RectF(btn_left_X, btn_center_Y - 14, btn_left_X + 28, btn_center_Y + 14), 90, -180);
+        path.lineTo(btn_left_X - 14, btn_center_Y - 14);
+        canvas.drawPath(path, paint);
+
+
+        paint.setStyle(Paint.Style.FILL);
+        path.reset();
+        path.moveTo(btn_left_X - 14, btn_center_Y - 22);
+        path.lineTo(btn_left_X - 14, btn_center_Y - 6);
+        path.lineTo(btn_left_X - 23, btn_center_Y - 14);
+        path.close();
+        canvas.drawPath(path, paint);
+
+        //打钩
+        paint.setStyle(Paint.Style.STROKE);
+//            paint.setColor(0xFF00CC00);
+        paint.setColor(Color.WHITE);
+        paint.setStrokeWidth(dp(2));
+        path.reset();
+        path.moveTo(btn_right_X - 28, btn_center_Y);
+        path.lineTo(btn_right_X - 8, btn_center_Y + 22);
+        path.lineTo(btn_right_X + 30, btn_center_Y - 20);
+        path.lineTo(btn_right_X - 8, btn_center_Y + 18);
+        path.close();
+        canvas.drawPath(path, paint);*/
+    }
+
+    private void drawDownArrow(Canvas canvas){
+        //draw return button 下箭头
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setColor(Color.WHITE);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(4);
+            Path path = new Path();
+
+            btn_return_X = ((getWidth() / 2) - btn_outside_radius) / 2;
+            btn_return_Y = (getHeight() / 2 + 10);
+
+            path.moveTo(btn_return_X - btn_return_length, btn_return_Y - btn_return_length);
+            path.lineTo(btn_return_X, btn_return_Y);
+            path.lineTo(btn_return_X + btn_return_length, btn_return_Y - btn_return_length);
+            canvas.drawPath(path, paint);
+    }
+
+    public static int dp(int dp){
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dp,
+                UtilContext.getContext().getResources().getDisplayMetrics());
+    }
+
+    public static void drawDrawable(Canvas canvas,int drawableId,int left,int top,int width_height){
+        drawDrawable(canvas,drawableId,left,top,width_height,width_height);
+    }
+
+    public static void drawDrawable(Canvas canvas,int drawableId,int left,int top,int width,int height){
+        RectF rectF=new RectF(left,top,left+width,top+height);
+        Bitmap bmp = BitmapFactory.decodeResource(UtilContext.getContext().getResources(), drawableId);
+        canvas.drawBitmap(bmp,null,rectF,null);
     }
 }

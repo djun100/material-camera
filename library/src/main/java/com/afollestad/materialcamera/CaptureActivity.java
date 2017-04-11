@@ -82,6 +82,6 @@ public class CaptureActivity extends BaseCaptureActivity implements CaptureButto
 
     @Override
     public void scale(float scaleValue) {
-        Log.w(CamConst.LOG_CALLBACK_FLOW,"scale:"+scaleValue);
+//        Log.w(CamConst.LOG_CALLBACK_FLOW,"scale:"+scaleValue);
     }
 }

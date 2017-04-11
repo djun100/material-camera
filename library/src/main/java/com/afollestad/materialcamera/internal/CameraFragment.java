@@ -152,6 +152,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
     @Override
     public void openCamera() {
+        com.cy.app.Log.w("init camera");
         final Activity activity = getActivity();
         if (null == activity || activity.isFinishing()) return;
         try {
@@ -488,6 +489,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
     }
 
     private void setupFlashMode() {
+        com.cy.app.Log.w("user camera");
         String flashMode = null;
         switch (mInterface.getFlashMode()) {
             case FLASH_MODE_AUTO:

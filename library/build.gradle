@@ -41,9 +41,9 @@ repositories {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
-    compile "com.afollestad:easyvideoplayer:$VIDEO_PLAYER_VERSION"
-    compile "com.afollestad.material-dialogs:core:$MD_VERSION"
+    compile "com.android.support:appcompat-v7:25.2.0"
+//    compile "com.afollestad:easyvideoplayer:0.3.0"
+    compile "com.afollestad.material-dialogs:core:0.9.1.0"
     compile 'com.github.djun100:UtilAndroid:633fa53'
 }
 

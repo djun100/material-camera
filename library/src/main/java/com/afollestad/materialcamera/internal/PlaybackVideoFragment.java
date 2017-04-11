@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.afollestad.easyvideoplayer.EasyVideoCallback;
-import com.afollestad.easyvideoplayer.EasyVideoPlayer;
 import com.afollestad.materialcamera.R;
+import com.afollestad.materialcamera.easy_video_player.EasyVideoCallback;
+import com.afollestad.materialcamera.easy_video_player.EasyVideoPlayer;
 import com.afollestad.materialcamera.util.CameraUtil;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cy.app.Log;
@@ -20,7 +20,7 @@ import com.cy.app.Log;
 /**录像结果预览
  * @author Aidan Follestad (afollestad)
  */
-public class PlaybackVideoFragment extends BasePreviewFra implements  EasyVideoCallback {
+public class PlaybackVideoFragment extends BasePreviewFra implements EasyVideoCallback {
 
     private EasyVideoPlayer mPlayer;
     private String mOutputUri;
@@ -112,6 +112,7 @@ public class PlaybackVideoFragment extends BasePreviewFra implements  EasyVideoC
         }
 
         mPlayer.setSource(Uri.parse(mOutputUri));
+
     }
 
     private void startCountdownTimer() {
@@ -190,5 +191,10 @@ public class PlaybackVideoFragment extends BasePreviewFra implements  EasyVideoC
     @Override
     public void onSubmit(EasyVideoPlayer player, Uri source) {
         useVideo();
+    }
+
+    @Override
+    public void onClickVideoFrame(EasyVideoPlayer player) {
+
     }
 }
