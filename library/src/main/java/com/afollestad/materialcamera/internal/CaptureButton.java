@@ -22,10 +22,6 @@ import android.widget.Toast;
 import com.afollestad.materialcamera.R;
 import com.cy.app.UtilContext;
 
-import java.security.KeyFactory;
-
-import static android.R.attr.width;
-
 /**
  * {@link #captureSuccess() 拍照完成需要调用执行的动画}
  */
@@ -263,7 +259,8 @@ public class CaptureButton extends View {
                         stateSelected = STATE_PICTURE_BROWSE;
                     }
                 } else if (stateSelected == STATE_RECORD) {
-                    if (record_anim.getCurrentPlayTime() < 500) {
+//                    if (record_anim.getCurrentPlayTime() < 500) {
+                    if (false) {
                         stateSelected = STATE_LESSNESS;
 //                        Toast.makeText(mContext, "Under time", Toast.LENGTH_SHORT).show();
                         progress = 0;
@@ -278,6 +275,14 @@ public class CaptureButton extends View {
                         progress = 0;
                         invalidate();
                         if (mCaptureListener != null) {
+                            if (record_anim.getCurrentPlayTime() < 500) {
+                                postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mCaptureListener.rencodEnd();
+                                    }
+                                },500-record_anim.getCurrentPlayTime());
+                            }else
                             mCaptureListener.rencodEnd();
                         }
                     }
