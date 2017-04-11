@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .allowRetry(true)
                 .autoSubmit(false)
                 .labelConfirm(R.string.mcam_use_video)
+                .videoEncodingBitRate(2*1080*1920)
                 .videoPreferredHeight(1280)
                 ;
 
