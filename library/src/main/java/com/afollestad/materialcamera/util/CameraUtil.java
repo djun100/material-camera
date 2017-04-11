@@ -69,8 +69,12 @@ public class CameraUtil {
                 for (String mode : modes) {
                     switch (mode) {
                         case Camera.Parameters.FLASH_MODE_AUTO:
-                            if (!flashModes.contains(BaseCaptureActivity.FLASH_MODE_AUTO))
+                            if (!flashModes.contains(BaseCaptureActivity.FLASH_MODE_AUTO)){
+                                if (true){
+                                    break;
+                                }
                                 flashModes.add(BaseCaptureActivity.FLASH_MODE_AUTO);
+                            }
                             break;
                         case Camera.Parameters.FLASH_MODE_ON:
                             if (!flashModes.contains(BaseCaptureActivity.FLASH_MODE_ALWAYS_ON))
