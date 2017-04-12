@@ -292,7 +292,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         final int deviceOrientation = Degrees.getDisplayRotation(getActivity());
         mDisplayOrientation = Degrees.getDisplayOrientation(
                 info.orientation, deviceOrientation, info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT);
-        Log.d("CameraFragment", String.format("Orientations: Sensor = %d˚, Device = %d˚, Display = %d˚",
+        Log.w("CameraFragment", String.format("Orientations: Sensor = %d˚, Device = %d˚, Display = %d˚",
                 info.orientation, deviceOrientation, mDisplayOrientation));
 
         int previewOrientation;

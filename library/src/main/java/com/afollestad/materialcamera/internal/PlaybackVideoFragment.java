@@ -66,8 +66,6 @@ public class PlaybackVideoFragment extends BasePreviewFra implements EasyVideoCa
     @Override
     public void onResume() {
         super.onResume();
-        if (getActivity() != null)
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     @Override
