@@ -33,8 +33,6 @@ public abstract class BaseGalleryFragment extends BasePreviewFra implements View
     @Override
     public void onResume() {
         super.onResume();
-        if (getActivity() != null)
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     @Override
