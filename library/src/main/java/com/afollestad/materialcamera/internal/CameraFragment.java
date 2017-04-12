@@ -129,7 +129,8 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.rootFrame) {
+        super.onClick(view);
+        /*if (view.getId() == R.id.rootFrame) {
             if (mCamera == null || mIsAutoFocusing) return;
             try {
                 mIsAutoFocusing = true;
@@ -147,7 +148,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             }
         } else {
             super.onClick(view);
-        }
+        }*/
     }
 
     @Override
@@ -239,6 +240,16 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             parameters.setPictureSize(mStillShotSize.width, mStillShotSize.height);
 
             setCameraDisplayOrientation(parameters);
+
+            //auto focus
+            List<String> focusModes = parameters.getSupportedFocusModes();
+            if (focusModes != null) {
+                for (String mode : focusModes) {
+                    mode.contains("continuous-video");
+                    parameters.setFocusMode("continuous-video");
+                }
+            }
+
             mCamera.setParameters(parameters);
 
             // NOTE: onFlashModesLoaded should not be called while modifying camera parameters as
