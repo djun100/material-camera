@@ -359,7 +359,7 @@ public abstract class BaseCameraFragment extends Fragment implements CameraUriIn
     }
 
     public void stopRecordingVideo(boolean reachedZero) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+//        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     @Override
