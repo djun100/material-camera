@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.afollestad.materialcamera.CaptureActivity;
 import com.afollestad.materialcamera.ICallback;
 import com.afollestad.materialcamera.R;
 import com.afollestad.materialcamera.util.CameraUtil;
@@ -288,11 +289,16 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
     private void setCameraDisplayOrientation(Camera.Parameters parameters) {
         Camera.CameraInfo info =
                 new Camera.CameraInfo();
+
         Camera.getCameraInfo(getCurrentCameraId(), info);
+
         final int deviceOrientation = Degrees.getDisplayRotation(getActivity());
+
         mDisplayOrientation = Degrees.getDisplayOrientation(
                 info.orientation, deviceOrientation, info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT);
-        Log.w("CameraFragment", String.format("Orientations: Sensor = %d˚, Device = %d˚, Display = %d˚",
+
+        Log.w("CameraFragment", String.format("Orientations: " +
+                        "Sensor = %d˚, Device = %d˚, Display = %d˚",
                 info.orientation, deviceOrientation, mDisplayOrientation));
 
         int previewOrientation;
@@ -395,7 +401,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
                 });
             }
 
-            mMediaRecorder.setOrientationHint(mDisplayOrientation);
+            mMediaRecorder.setOrientationHint(((BaseCaptureActivity) activity).getCurrentRotation());
             mMediaRecorder.setPreviewDisplay(mPreviewView.getHolder().getSurface());
 
             try {
@@ -528,6 +534,10 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
     @Override
     public void takeStillshot() {
+        Camera.Parameters parameters=mCamera.getParameters();
+        parameters.setRotation(((CaptureActivity)getActivity()).getCurrentRotation());
+        mCamera.setParameters(parameters);
+        
         Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
             public void onShutter() {
                 //Log.d(TAG, "onShutter'd");

@@ -3,10 +3,15 @@ package com.afollestad.materialcamera.internal;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.CamcorderProfile;
 import android.net.Uri;
 import android.os.Build;
@@ -55,8 +60,10 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
 
     public static final int PERMISSION_RC = 69;
     private BaseCameraFragment mCameraFragment;
-
-
+    // Sensor 管理服务
+    private SensorManager mSensorManager;
+    private float mGravityX;
+    private SensorEventListener mGravityListener;
     public BasePreviewFra getBasePreviewFra() {
         return mBasePreviewFra;
     }
@@ -109,6 +116,28 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         super.onCreate(savedInstanceState);
         Log.w(this);
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        // 重力传感器
+        mSensorManager.registerListener(mGravityListener = new SensorEventListener() {
+                                            @Override
+                                            public void onSensorChanged(SensorEvent event) {
+                                                // 获取变化的传感器对应的数值
+                                                int type = event.sensor.getType();
+                                                // 获取变化的值
+                                                float[] values = event.values;
+                                                if (type==Sensor.TYPE_GRAVITY){
+                                                    //x轴
+                                                    mGravityX=values[0];
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+                                            }
+                                        },
+                mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
+                SensorManager.SENSOR_DELAY_UI);
 
         if (!CameraUtil.hasCamera(this)) {
             new MaterialDialog.Builder(this)
@@ -197,6 +226,12 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
         super.onPause();
         if (!isFinishing() && !isChangingConfigurations() && !mRequestingPermission)
             finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mSensorManager.unregisterListener(mGravityListener);
+        super.onDestroy();
     }
 
     @Override
@@ -609,5 +644,18 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     @Override
     public boolean shouldHideCameraFacing() {
         return !getIntent().getBooleanExtra(CameraIntentKey.ALLOW_CHANGE_CAMERA, false);
+    }
+
+    /**
+     * @return  计算方式：顺时针，机头朝左为起始0度 180:机头朝右 0：机头朝左 270：手机直立
+     */
+    public int getCurrentRotation(){
+        if (mGravityX>8){
+            return 0;
+        }else if (mGravityX<-8){
+            return 180;
+        }else {
+            return 270;
+        }
     }
 }

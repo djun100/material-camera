@@ -90,7 +90,8 @@ public class Degrees {
 
     @SuppressWarnings("ResourceType")
     @DegreeUnits
-    public static int getDisplayOrientation(@Degrees.DegreeUnits int sensorOrientation, @Degrees.DegreeUnits int displayOrientation, boolean front) {
+    public static int getDisplayOrientation(@Degrees.DegreeUnits int sensorOrientation,
+                                            @Degrees.DegreeUnits int displayOrientation, boolean front) {
         final boolean isLandscape = isLandscape(displayOrientation);
         if (displayOrientation == DEGREES_0)
             displayOrientation = DEGREES_360;
