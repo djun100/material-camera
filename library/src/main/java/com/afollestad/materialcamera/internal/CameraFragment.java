@@ -535,9 +535,10 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
     @Override
     public void takeStillshot() {
         Camera.Parameters parameters=mCamera.getParameters();
-        parameters.setRotation(((CaptureActivity)getActivity()).getCurrentRotation());
+        int rotation=((CaptureActivity)getActivity()).getCurrentRotation();
+        parameters.setRotation(rotation);
         mCamera.setParameters(parameters);
-        
+
         Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
             public void onShutter() {
                 //Log.d(TAG, "onShutter'd");

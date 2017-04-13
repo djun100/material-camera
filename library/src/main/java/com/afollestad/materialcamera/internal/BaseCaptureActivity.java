@@ -655,7 +655,12 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
         }else if (mGravityX<-8){
             return 180;
         }else {
-            return 270;
+            if (getCurrentCameraPosition() == BaseCaptureActivity.CAMERA_POSITION_BACK){
+                return 90;
+            }else {
+                return 270;
+            }
+
         }
     }
 }
