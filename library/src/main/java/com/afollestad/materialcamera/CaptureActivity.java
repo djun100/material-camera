@@ -35,7 +35,9 @@ public class CaptureActivity extends BaseCaptureActivity implements CaptureButto
     public void cancel() {//拍照预览按界面 return 按钮
         Log.w(CamConst.LOG_CALLBACK_FLOW,"cancel");
 
-        onRetry(getBasePreviewFra().getOutputUri());
+        if (getBasePreviewFra()!=null) {
+            onRetry(getBasePreviewFra().getOutputUri());
+        }
     }
 
     @Override
@@ -77,7 +79,9 @@ public class CaptureActivity extends BaseCaptureActivity implements CaptureButto
     @Override
     public void deleteRecordResult() {//录像预览按界面 return 按钮
         Log.w(CamConst.LOG_CALLBACK_FLOW,"deleteRecordResult");
-        onRetry(getBasePreviewFra().getOutputUri());
+        if (getBasePreviewFra()!=null) {
+            onRetry(getBasePreviewFra().getOutputUri());
+        }
     }
 
     @Override
